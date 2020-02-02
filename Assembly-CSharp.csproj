@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Monobehaviours\AnimationsController.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\BoolVariable.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\FloatVariable.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\IntVariable.cs" />
