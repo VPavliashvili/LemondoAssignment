@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationsController : MonoBehaviour {
+public class CharacterAnimationsController : MonoBehaviour {
 
-    Animator animator;
+    private Animator animator;
 
     void Awake() {
         animator = GetComponent<Animator>();    
@@ -19,12 +19,11 @@ public class AnimationsController : MonoBehaviour {
     }
 
     public void GetItem() {
-        Debug.Log("Item has been got");
-        //itemPicked = true;
+        animator.SetBool("ItemPicked", true);
     }
 
     public void ThrowItem() {
-        Debug.Log("Item has been thrown");
+        animator.SetBool("ItemPicked", false);
     }
 
     public void EndClimbing() {

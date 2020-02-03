@@ -62,13 +62,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Monobehaviours\AnimationsController.cs" />
+    <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleAudio.cs" />
+    <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModulePhysics.cs" />
+    <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModulePhysics2D.cs" />
+    <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleSprite.cs" />
+    <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUI.cs" />
+    <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
+    <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
+    <Compile Include="Assets\Scripts\General\CharacterAnimationsController.cs" />
+    <Compile Include="Assets\Scripts\General\Utils.cs" />
+    <Compile Include="Assets\Scripts\Level1\Helper.cs" />
+    <Compile Include="Assets\Scripts\Level1\MovementController.cs" />
+    <Compile Include="Assets\Scripts\Level1\TrapsDeployer.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\BoolVariable.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\FloatVariable.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\IntVariable.cs" />
     <Compile Include="Assets\Scripts\VariableReferences\BoolReference.cs" />
     <Compile Include="Assets\Scripts\VariableReferences\FloatReference.cs" />
     <Compile Include="Assets\Scripts\VariableReferences\IntReference.cs" />
+    <None Include="Assets\Demigiant\DOTween\readme.txt" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>C:/Users/Chestera/Desktop/Unity/LemondoAssignment/Lemondo Assignment/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -278,6 +290,9 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.17f1/Editor/Data/Managed/UnityEngine/UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>C:/Users/Chestera/Desktop/Unity/LemondoAssignment/Lemondo Assignment/Assets/Demigiant/DOTween/DOTween.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.2.17f1/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
