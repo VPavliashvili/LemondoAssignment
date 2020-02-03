@@ -9,6 +9,7 @@ TagManager:
   - Head
   - Front Hand
   - Trap
+  - Wall
   layers:
   - Default
   - TransparentFX

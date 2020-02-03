@@ -71,9 +71,11 @@
     <Compile Include="Assets\Demigiant\DOTween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\Scripts\General\CharacterAnimationsController.cs" />
     <Compile Include="Assets\Scripts\General\Utils.cs" />
-    <Compile Include="Assets\Scripts\Level1\Helper.cs" />
+    <Compile Include="Assets\Scripts\Level1\Helpers\GravityHelper.cs" />
+    <Compile Include="Assets\Scripts\Level1\Helpers\MovementHelper.cs" />
     <Compile Include="Assets\Scripts\Level1\MovementController.cs" />
     <Compile Include="Assets\Scripts\Level1\TrapsDeployer.cs" />
+    <Compile Include="Assets\Scripts\Level1\WallInfo.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\BoolVariable.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\FloatVariable.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\IntVariable.cs" />

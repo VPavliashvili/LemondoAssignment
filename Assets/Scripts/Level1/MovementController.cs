@@ -6,6 +6,8 @@ namespace Level1 {
 
     public class MovementController : MonoBehaviour {
 
+        #region Variables & Properties
+
         [SerializeField]
         private Transform character;
         [SerializeField]
@@ -18,6 +20,7 @@ namespace Level1 {
         private BoolReference isJumping;
 
         private Rigidbody2D rb;
+        private BoxCollider2D boxCollider;
         private Vector2 movementDir;
 
         [SerializeField]
@@ -41,14 +44,17 @@ namespace Level1 {
         private float Speed => movementSpeed * Time.fixedDeltaTime;
         private Vector3 MovePos => (Vector3)movementDir * Speed * horizontalInput;
 
+        #endregion
+
         void Awake() {
             rb = GetComponent<Rigidbody2D>();
+            boxCollider = GetComponent<BoxCollider2D>();
             movementDir = Vector2.right;
             character.parent = transform;
         }
 
         void Start() {
-            StartCoroutine(Helper.SetRandomGravity(transform, rb, startingGravityScale, waitTimeBeforeGravityFlip));
+            StartCoroutine(GravityHelper.SetRandomGravity(transform, rb, startingGravityScale, waitTimeBeforeGravityFlip));
         }
 
         void Update() {
@@ -60,33 +66,31 @@ namespace Level1 {
         }
 
         void FixedUpdate() {
-            Helper.Move(
+            MovementHelper.Move(
                 ref facingLeft, isJumping, ref isGrounded, 
                 jumpForce, rb, transform, MovePos, horizontalInput
             );
         }
 
         void OnCollisionEnter2D(Collision2D other) {
-            if (!isFixedGravity) {
-                if (other.gameObject.name == "Left") {
-                    movementDir = Vector2.down;
-                    Helper.ChangeGravity(-90, Vector2.left, transform);
+            if (!isFixedGravity && other.gameObject.tag == "Wall") {
+
+                if (other.gameObject.name != "Bottom") {
+                    WallInfo wall = other.gameObject.GetComponent<WallInfo>();
+                    movementDir = wall.movementDir;
+                    GravityHelper.ChangeGravity(wall.gravityFlipRotation, wall.gravityDir, transform);
                 }
-                else if (other.gameObject.name == "Right") {
-                    movementDir = Vector2.up;
-                    Helper.ChangeGravity(90, Vector2.right, transform);
-                }
-                else if (other.gameObject.name == "Top") {
-                    movementDir = Vector2.left;
-                    Helper.ChangeGravity(180, Vector2.up, transform);
-                }
+
+                isGrounded = true;
             }
-            isGrounded = true;
         }
 
         void OnTriggerEnter2D(Collider2D other) {
             if (other.tag == "Trap") {
-                //died
+                boxCollider.isTrigger = true;
+            }
+            else if(other.name == "Finish") {
+                Debug.Log("Level Passed");
             }
         }
 
@@ -99,7 +103,7 @@ namespace Level1 {
         void OnTriggerStay2D(Collider2D other) {
             if (other.name == "Switch") {
                 if (Input.GetButtonDown("Action") && !isFixedGravity) {
-                    Helper.FixGravity(
+                    GravityHelper.FixGravity(
                         ref movementDir, ref isFixedGravity, transform, other, doorRenderer, openDoor, doorMask
                     );
                 }

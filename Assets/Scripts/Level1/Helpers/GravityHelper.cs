@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Level1 {
 
-    public static class Helper {
+    public static class GravityHelper {
 
         public static void FixGravity(
-            ref Vector2 movementDir, ref bool isFixedGravity, Transform transform, 
+            ref Vector2 movementDir, ref bool isFixedGravity, Transform transform,
             Collider2D other, SpriteRenderer doorRenderer, Sprite openDoor, SpriteMask doorMask
         ) {
             movementDir = Vector2.right;
@@ -61,36 +61,6 @@ namespace Level1 {
             transform.DORotate(new Vector3(transform.localEulerAngles.x, transform.localEulerAngles.y, desiredZAngle), 0.3f);
             Physics2D.gravity = dir * Utils.G;
         }
-
-        public static void Move(
-                ref bool facingLeft, BoolReference isJumping, ref bool isGrounded,
-                float jumpForce, Rigidbody2D rb, Transform transform,
-                Vector3 movePos, float horizontalInput
-            ) {
-            transform.localPosition += movePos;
-            FlipFacing(ref facingLeft, transform, horizontalInput);
-            Jump(isJumping, ref isGrounded, rb, jumpForce);
-        }
-
-        private static void FlipFacing(ref bool facingLeft, Transform transform, float inputValue) {
-            if ((inputValue > 0 && facingLeft) || (inputValue < 0 && !facingLeft)) {
-                facingLeft = !facingLeft;
-
-                Vector3 newScale = transform.localScale;
-                newScale.x = -newScale.x;
-                transform.localScale = newScale;
-            }
-        }
-
-        private static void Jump(BoolReference isJumping, ref bool isGrounded, Rigidbody2D rb, float jumpForce) {
-            if (isJumping && isGrounded) {
-                rb.AddForce(-Physics2D.gravity * jumpForce);
-
-                isGrounded = false;
-                isJumping.Value = false;
-            }
-        }
-
 
     }
 
