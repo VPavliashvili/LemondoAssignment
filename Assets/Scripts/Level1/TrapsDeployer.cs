@@ -8,43 +8,29 @@ namespace Level1 {
 
         [HideInInspector]
         public List<GameObject> Traps;
+        public WallInfo[] walls;
 
         [SerializeField]
-        private GameObject trapPrefab;
+        public GameObject trapPrefab;
         [SerializeField]
-        private Transform trapsContainer;
+        public Transform trapsContainer;
         [SerializeField]
         [Range(1, 3)]
-        private int minTrapCountOnWall;
+        public int minTrapCountOnWall;
         [SerializeField]
         [Range(3, 5)]
-        private int maxTrapCountOnWall;
-        [SerializeField]
-        private WallInfo[] walls;
+        public int maxTrapCountOnWall;
 
         void Awake() {
             Traps = new List<GameObject>();
         }
 
         void Start() {
-            foreach (WallInfo wall in walls) {
+            TrapsHelper.DeployTraps(
+                walls, minTrapCountOnWall, maxTrapCountOnWall,
+                Instantiate, trapPrefab, trapsContainer, Traps
+            );
 
-                float rotation = wall.gravityFlipRotation;
-                int number = Random.Range(minTrapCountOnWall, maxTrapCountOnWall);
-                Transform field = wall.TrapsField;
-
-                Bounds bounds = Utils.GetBoundsWithRenderer(field.GetComponent<SpriteRenderer>());
-
-                Vector2[] positionsToDeploy = wall.GetTrappositions(number, bounds, Utils.GetBoundsWithRenderer(trapPrefab.GetComponent<SpriteRenderer>()).size);
-
-                for (int i = 0; i < number; i++) {
-                    GameObject trap = Instantiate(trapPrefab, positionsToDeploy[i], Quaternion.identity);
-                    trap.transform.parent = trapsContainer;
-                    trap.transform.localEulerAngles = new Vector3(0, 0, rotation);
-                    Traps.Add(trap);
-                }
-
-            }
         }
 
     }

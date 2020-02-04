@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Level1 {
 
-    public class MovementController : MonoBehaviour {
+    public class PlayerController : MonoBehaviour {
 
         #region Variables & Properties
 
@@ -18,14 +18,22 @@ namespace Level1 {
         private SpriteMask doorMask;
         [SerializeField]
         private BoolReference isJumping;
+        [SerializeField]
+        private BoolReference isWalking;
+        [SerializeField]
+        private TrapsDeployer trapsDeployer;
 
         private Rigidbody2D rb;
         private BoxCollider2D boxCollider;
         private Vector2 movementDir;
+        private Vector3 startingPos;
 
         [SerializeField]
         [Range(5, 50)]
         private float movementSpeed;
+        [SerializeField]
+        [Range(2, 5)]
+        private float walkingReduction;
         [SerializeField]
         [Range(50, 200)]
         private float jumpForce;
@@ -41,7 +49,7 @@ namespace Level1 {
         private bool isGrounded;
         private bool isFixedGravity;
 
-        private float Speed => movementSpeed * Time.fixedDeltaTime;
+        private float Speed => (isWalking ? movementSpeed / walkingReduction : movementSpeed) * Time.fixedDeltaTime;
         private Vector3 MovePos => (Vector3)movementDir * Speed * horizontalInput;
 
         #endregion
@@ -60,9 +68,9 @@ namespace Level1 {
         void Update() {
             horizontalInput = Input.GetAxis("Horizontal");
 
-            if (Input.GetButtonDown("Jump")) {
-                isJumping.Value = true;
-            }
+            MovementHelper.SetInputButtonBool("Jump", isJumping);
+            MovementHelper.SetInputButtonBool("Walk", isWalking, AnimatorHelper.animator, "IsWalking");
+            
         }
 
         void FixedUpdate() {
@@ -83,20 +91,30 @@ namespace Level1 {
 
                 isGrounded = true;
             }
+            if(other.gameObject.name == "Bottom") {
+                isGrounded = true;
+            }
+
         }
 
         void OnTriggerEnter2D(Collider2D other) {
-            if (other.tag == "Trap") {
+            if (other.tag == "Trap" && !isFixedGravity) {
                 boxCollider.isTrigger = true;
             }
             else if(other.name == "Finish") {
-                Debug.Log("Level Passed");
+                if (isFixedGravity)
+                    CustomEvents.instance.RaiseOnLevelpass();
             }
         }
 
         void OnTriggerExit2D(Collider2D other) {
-            if(other.tag == "Trap") {
-                //respawn after 1 sec
+            if(other.tag == "Trap" && !isFixedGravity) {
+                CustomEvents.instance.RaiseOnGameOver(
+                    StartCoroutine, Destroy, trapsDeployer.Traps,
+                    trapsDeployer.walls, trapsDeployer.minTrapCountOnWall, trapsDeployer.maxTrapCountOnWall,
+                    Instantiate, trapsDeployer.trapPrefab, trapsDeployer.trapsContainer, startingPos, rb,
+                    startingGravityScale, waitTimeBeforeGravityFlip
+                );
             }
         }
 
@@ -109,6 +127,6 @@ namespace Level1 {
                 }
             }
         }
-
+        
     }
 }

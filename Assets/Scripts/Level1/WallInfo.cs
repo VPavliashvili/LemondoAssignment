@@ -50,6 +50,7 @@ public class WallInfo : MonoBehaviour {
         }
     }
 
+    #region very ugly method hides here
     public Vector2[] GetTrappositions(int number, Bounds bounds, Vector3 trapSize) {
 
         float min = 0;
@@ -97,5 +98,5 @@ public class WallInfo : MonoBehaviour {
 
         return res.ToArray();
     }
-
+    #endregion
 }

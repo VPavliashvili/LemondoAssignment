@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4843219257493178782}
   - component: {fileID: 8317717391119776958}
   - component: {fileID: -2408204941045140468}
+  - component: {fileID: 4362516227829912489}
   m_Layer: 0
   m_Name: Trap
   m_TagString: Trap
@@ -138,7 +139,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4843219257493178755}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 1
@@ -157,3 +158,25 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.7083001, y: 0.21832037}
   m_EdgeRadius: 0
+--- !u!68 &4362516227829912489
+EdgeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4843219257493178755}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_EdgeRadius: 0
+  m_Points:
+  - {x: -0.39054012, y: -0.07075774}
+  - {x: -0.20125052, y: 0.09434357}
+  - {x: 0.02073842, y: 0.11418662}
+  - {x: 0.25514296, y: 0.09221783}
+  - {x: 0.38837066, y: -0.071675755}
+  - {x: -0.40071, y: -0.07337833}

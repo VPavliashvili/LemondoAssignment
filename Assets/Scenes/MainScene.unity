@@ -984,6 +984,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2161af835a2730843b1cde17da82992a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isJumping:
+    variable: {fileID: 11400000, guid: 8a32a3b9956917c43ab85d2682477039, type: 2}
 --- !u!1 &464323667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1560,7 +1562,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1263405443}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 4.4, y: 11.84, z: 0}
+  m_LocalPosition: {x: 4.4, y: 12.36, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1308603408}
@@ -1690,15 +1692,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Traps: []
+  walls:
+  - {fileID: 399719737}
+  - {fileID: 2071747015}
+  - {fileID: 400921657}
   trapPrefab: {fileID: 4843219257493178755, guid: e1137fa853396de4d8b0e237e40f1814,
     type: 3}
   trapsContainer: {fileID: 1481452033}
   minTrapCountOnWall: 3
   maxTrapCountOnWall: 5
-  walls:
-  - {fileID: 399719737}
-  - {fileID: 2071747015}
-  - {fileID: 400921657}
 --- !u!1 &1339067778
 GameObject:
   m_ObjectHideFlags: 0
@@ -1863,7 +1865,11 @@ MonoBehaviour:
   doorMask: {fileID: 464323669}
   isJumping:
     variable: {fileID: 11400000, guid: 8a32a3b9956917c43ab85d2682477039, type: 2}
+  isWalking:
+    variable: {fileID: 11400000, guid: 382a04f505ac76d4eaec197b7838f261, type: 2}
+  trapsDeployer: {fileID: 1308603409}
   movementSpeed: 15
+  walkingReduction: 3.11
   jumpForce: 87.06
   startingGravityScale: 0.541
   waitTimeBeforeGravityFlip: 0.801
@@ -2151,6 +2157,49 @@ MonoBehaviour:
   gravityDir: {x: 0, y: 0}
   gravityFlipRotation: 0
   side: 2
+--- !u!1 &1589274553
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1589274555}
+  - component: {fileID: 1589274554}
+  m_Layer: 0
+  m_Name: CustomEventSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1589274554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589274553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35d566190ef04c549810d8f81bfa7a88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1589274555
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589274553}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1652611221
 GameObject:
   m_ObjectHideFlags: 0

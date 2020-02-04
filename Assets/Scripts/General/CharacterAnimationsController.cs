@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class CharacterAnimationsController : MonoBehaviour {
 
-    private Animator animator;
+    [SerializeField]
+    private BoolReference isJumping;
 
+    private Animator animator;
+    
     void Awake() {
-        animator = GetComponent<Animator>();    
+        animator = GetComponent<Animator>();
+        AnimatorHelper.animator = animator;
     }
 
     void Start() {
@@ -15,7 +19,7 @@ public class CharacterAnimationsController : MonoBehaviour {
     }
 
     void Update() {
-
+        
     }
 
     public void GetItem() {
