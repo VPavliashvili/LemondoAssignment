@@ -3,14 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Level1 {
+namespace Stage1 {
 
     public static class TrapsHelper {
 
         public static void DeployTraps(
             WallInfo[] walls, int min, int max,
             System.Func<GameObject,Vector3,Quaternion,GameObject> instantiate, 
-            GameObject trapPrefab, Transform trapsContainer, List<GameObject> traps
+            GameObject trapPrefab, List<GameObject> traps
         ) {
             foreach (WallInfo wall in walls) {
 
@@ -25,14 +25,24 @@ namespace Level1 {
 
                 for (int i = 0; i < number; i++) {
                     GameObject trap = instantiate(trapPrefab, positionsToDeploy[i], Quaternion.identity);
-                    trap.transform.parent = trapsContainer;
-                    trap.transform.localEulerAngles = new Vector3(0, 0, rotation);
+
+                    Vector3 trapOriginalScale = trap.transform.localScale;
+                    trap.transform.parent = wall.transform;//.GetFirstChild();
+                    //trap.transform.localScale = trapOriginalScale;
+                    trap.transform.localScale = new Vector3(
+                        trapOriginalScale.x / trap.transform.parent.localScale.x,
+                        trapOriginalScale.y / trap.transform.parent.localScale.y,
+                        1
+                    );
+
+                    trap.transform.eulerAngles = new Vector3(0, 0, rotation);
                     traps.Add(trap);
                 }
 
             }
         }
-        
+
     }
 
 }
+

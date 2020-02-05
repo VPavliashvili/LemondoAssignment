@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Level1 {
+namespace Stage1 {
 
     public static class GameOverHelper {
 
@@ -13,13 +13,13 @@ namespace Level1 {
             List<GameObject> traps,
             WallInfo[] walls, int min, int max,
             Func<GameObject, Vector3, Quaternion, GameObject> instantiate,
-            GameObject trapPf, Transform trapsContainer,
+            GameObject trapPf,
             Vector3 position, Rigidbody2D rb,
             float startGravityScale, float waitTime
         ) {
 
             startCoroutine(OnGameOverRoutine(
-                traps, destroy, walls, min, max, instantiate, trapPf, trapsContainer,
+                traps, destroy, walls, min, max, instantiate, trapPf,
                  position, rb, startGravityScale, waitTime, startCoroutine
             ));
             
@@ -45,14 +45,14 @@ namespace Level1 {
             Action<GameObject> destroy,
             WallInfo[] walls, int min, int max,
             Func<GameObject, Vector3, Quaternion, GameObject> instantiate,
-            GameObject trapPf, Transform trapsContainer,
+            GameObject trapPf,
             Vector3 position, Rigidbody2D rb,
             float startGravityScale, float waitTime,
             Func<IEnumerator, Coroutine> startCoroutine
         ) {
 
             ClearTraps(traps, destroy);
-            TrapsHelper.DeployTraps(walls, min, max, instantiate, trapPf, trapsContainer, traps);
+            TrapsHelper.DeployTraps(walls, min, max, instantiate, trapPf, traps);
 
             startCoroutine(GravityHelper.SetRandomGravity(rb.transform, rb, startGravityScale, waitTime));
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Level1 {
+namespace Stage1 {
 
     public class TrapsDeployer : MonoBehaviour {
 
@@ -12,8 +12,6 @@ namespace Level1 {
 
         [SerializeField]
         public GameObject trapPrefab;
-        [SerializeField]
-        public Transform trapsContainer;
         [SerializeField]
         [Range(1, 3)]
         public int minTrapCountOnWall;
@@ -28,7 +26,7 @@ namespace Level1 {
         void Start() {
             TrapsHelper.DeployTraps(
                 walls, minTrapCountOnWall, maxTrapCountOnWall,
-                Instantiate, trapPrefab, trapsContainer, Traps
+                Instantiate, trapPrefab, Traps
             );
 
         }

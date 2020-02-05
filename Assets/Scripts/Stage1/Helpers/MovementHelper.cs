@@ -3,31 +3,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Level1 {
+namespace Stage1 {
 
     public static class MovementHelper {
 
-        public static void SetInputButtonBool(string inputName, BoolReference var) {
+        //for jumping
+        public static void SetInputButtonBool(string inputName, BoolReference varjump) {
             if (Input.GetButtonDown(inputName)) {
-                var.Value = true;
+                varjump.Value = true;
             }
             else if (Input.GetButtonUp(inputName)) {
-                var.Value = false;
+                varjump.Value = false;
             }
+            //Debug.Log($"from jumping->var: {BoolReference.GetVariableName(() => varjump)}");
         }
 
-        public static void SetInputButtonBool(string inputName, BoolReference var, Animator animator, string animationBoolName) {
+        //for moving
+        public static void SetInputButtonBool(string inputName, BoolReference varwalk, Animator animator, string animationBoolName) {
             if (Input.GetButtonDown(inputName)) {
-                var.Value = true;
+                varwalk.Value = true;
                 animator.SetBool(animationBoolName, true);
             }
             else if (Input.GetButtonUp(inputName)) {
-                var.Value = false;
+                varwalk.Value = false;
                 animator.SetBool(animationBoolName, false);
             }
+            //Debug.Log($"from walking->var: {BoolReference.GetVariableName(() => varwalk)}");
         }
 
-        public static void Move(
+        public static void ManageMovement(
                 ref bool facingLeft, BoolReference isJumping, ref bool isGrounded,
                 float jumpForce, Rigidbody2D rb, Transform transform,
                 Vector3 movePos, float horizontalInput
@@ -36,8 +40,10 @@ namespace Level1 {
             FlipFacing(ref facingLeft, transform, horizontalInput);
             Jump(isJumping, ref isGrounded, rb, jumpForce);
 
-            Debug.Log(horizontalInput);
+            //Debug.Log(horizontalInput);
+            
             AnimatorHelper.Move(horizontalInput);
+
         }
 
         private static void FlipFacing(ref bool facingLeft, Transform transform, float inputValue) {
@@ -51,6 +57,7 @@ namespace Level1 {
         }
 
         private static void Jump(BoolReference isJumping, ref bool isGrounded, Rigidbody2D rb, float jumpForce) {
+                //Debug.Log($"isJumping: {isJumping}\nisGrounded: {isGrounded}");
             if (isJumping && isGrounded) {
                 rb.AddForce(-Physics2D.gravity * jumpForce);
 
@@ -58,7 +65,9 @@ namespace Level1 {
                 isJumping.Value = false;
 
                 AnimatorHelper.Jump();
+                
             }
+                //Debug.Log(rb.transform.parent.name);
         }
 
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Level1 {
+namespace Stage1 {
 
     public class CustomEvents : MonoBehaviour {
 
@@ -21,7 +21,7 @@ namespace Level1 {
         void Start() {
             instance.OnGameOver += GameOverHelper.OnGameOver;
 
-            instance.OnLevelPass += EventMethods.OnLevelPass;
+            instance.OnStagePassed += StagePassHelper.OnStagePassed;
         }
         
         public event Action
@@ -30,7 +30,7 @@ namespace Level1 {
             List<GameObject>,
             WallInfo[], int, int,
             Func<GameObject,Vector3,Quaternion,GameObject>,
-            GameObject, Transform, Vector3, Rigidbody2D, float, float
+            GameObject, Vector3, Rigidbody2D, float, float
             > OnGameOver;
 
         public void RaiseOnGameOver(
@@ -39,16 +39,25 @@ namespace Level1 {
             List<GameObject> traps,
             WallInfo[] walls, int min, int max,
             Func<GameObject, Vector3, Quaternion, GameObject> instantiate,
-            GameObject trapPf, Transform trapsContainer,
+            GameObject trapPf,
             Vector3 position, Rigidbody2D rb,
             float startScale, float waitTime
         ) => OnGameOver?.Invoke(
                 coroutine, destroy, traps, walls, min, max, instantiate, 
-                trapPf, trapsContainer, position, rb, startScale, waitTime
+                trapPf, position, rb, startScale, waitTime
             );
 
-        public event Action OnLevelPass;
-        public void RaiseOnLevelpass() => OnLevelPass?.Invoke();
+        public event Action
+            <StageCompleter, WallInfo,
+            Func<GameObject, Vector3,Quaternion,GameObject>,
+            GameObject, Vector3
+            > OnStagePassed;
+        public void RaiseOnStagePassed(
+            StageCompleter completer, WallInfo rightWall, 
+            Func<GameObject, Vector3, Quaternion, GameObject> instantiate,
+            GameObject nextStagePrefab, Vector3 onPosition
+            ) => OnStagePassed?.Invoke(completer, rightWall, instantiate, nextStagePrefab, onPosition);
+            
 
     }
 

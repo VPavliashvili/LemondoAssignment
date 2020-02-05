@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Level1 {
+namespace Stage1 {
 
-    public class PlayerController : MonoBehaviour {
+    public class PlayerController : GeneralPlayerController {
 
         #region Variables & Properties
 
@@ -17,26 +17,16 @@ namespace Level1 {
         [SerializeField]
         private SpriteMask doorMask;
         [SerializeField]
-        private BoolReference isJumping;
-        [SerializeField]
-        private BoolReference isWalking;
-        [SerializeField]
         private TrapsDeployer trapsDeployer;
+        [SerializeField]
+        private StageCompleter stageCompleter;
+        [SerializeField]
+        private GameObject nextStagePrefab;
 
-        private Rigidbody2D rb;
         private BoxCollider2D boxCollider;
-        private Vector2 movementDir;
+        private WallInfo rightWall;
         private Vector3 startingPos;
 
-        [SerializeField]
-        [Range(5, 50)]
-        private float movementSpeed;
-        [SerializeField]
-        [Range(2, 5)]
-        private float walkingReduction;
-        [SerializeField]
-        [Range(50, 200)]
-        private float jumpForce;
         [SerializeField]
         [Range(0.1f, 1)]
         private float startingGravityScale;
@@ -44,13 +34,7 @@ namespace Level1 {
         [Range(0.1f, 1)]
         private float waitTimeBeforeGravityFlip;
 
-        private float horizontalInput;
-        private bool facingLeft;
-        private bool isGrounded;
         private bool isFixedGravity;
-
-        private float Speed => (isWalking ? movementSpeed / walkingReduction : movementSpeed) * Time.fixedDeltaTime;
-        private Vector3 MovePos => (Vector3)movementDir * Speed * horizontalInput;
 
         #endregion
 
@@ -59,25 +43,19 @@ namespace Level1 {
             boxCollider = GetComponent<BoxCollider2D>();
             movementDir = Vector2.right;
             character.parent = transform;
+            rightWall = trapsDeployer.walls[1];
         }
 
         void Start() {
             StartCoroutine(GravityHelper.SetRandomGravity(transform, rb, startingGravityScale, waitTimeBeforeGravityFlip));
         }
 
-        void Update() {
-            horizontalInput = Input.GetAxis("Horizontal");
-
-            MovementHelper.SetInputButtonBool("Jump", isJumping);
-            MovementHelper.SetInputButtonBool("Walk", isWalking, AnimatorHelper.animator, "IsWalking");
-            
-        }
-
         void FixedUpdate() {
-            MovementHelper.Move(
+            MovementHelper.ManageMovement(
                 ref facingLeft, isJumping, ref isGrounded, 
                 jumpForce, rb, transform, MovePos, horizontalInput
             );
+
         }
 
         void OnCollisionEnter2D(Collision2D other) {
@@ -91,7 +69,8 @@ namespace Level1 {
 
                 isGrounded = true;
             }
-            if(other.gameObject.name == "Bottom") {
+
+            if (other.gameObject.name == "Bottom") {
                 isGrounded = true;
             }
 
@@ -103,7 +82,21 @@ namespace Level1 {
             }
             else if(other.name == "Finish") {
                 if (isFixedGravity)
-                    CustomEvents.instance.RaiseOnLevelpass();
+                    CustomEvents.instance.RaiseOnStagePassed(
+                        stageCompleter, rightWall, 
+                        Instantiate, nextStagePrefab, getNextPos()
+                    );
+            }
+            Vector3 getNextPos() {
+                Vector3 res = Vector3.zero;
+
+                Transform background = GameObject.Find("Background").transform;
+
+                res.y = background.position.y;
+
+                Vector3 extents = Utils.GetBoundsWithRenderer(background.GetComponent<SpriteRenderer>()).extents;
+                res.x = extents.x * 2;
+                return res;
             }
         }
 
@@ -112,7 +105,7 @@ namespace Level1 {
                 CustomEvents.instance.RaiseOnGameOver(
                     StartCoroutine, Destroy, trapsDeployer.Traps,
                     trapsDeployer.walls, trapsDeployer.minTrapCountOnWall, trapsDeployer.maxTrapCountOnWall,
-                    Instantiate, trapsDeployer.trapPrefab, trapsDeployer.trapsContainer, startingPos, rb,
+                    Instantiate, trapsDeployer.trapPrefab, startingPos, rb,
                     startingGravityScale, waitTimeBeforeGravityFlip
                 );
             }
@@ -122,7 +115,7 @@ namespace Level1 {
             if (other.name == "Switch") {
                 if (Input.GetButtonDown("Action") && !isFixedGravity) {
                     GravityHelper.FixGravity(
-                        ref movementDir, ref isFixedGravity, transform, other, doorRenderer, openDoor, doorMask
+                        ref movementDir, ref isFixedGravity, transform, other, doorRenderer, openDoor, doorMask, rightWall
                     );
                 }
             }
