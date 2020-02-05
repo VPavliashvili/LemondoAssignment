@@ -6,8 +6,20 @@ namespace Stage2 {
 
     public class KillerBallController : MonoBehaviour {
 
+        private Rigidbody2D rb;
+        [HideInInspector]
+        public Vector3 startingPos;
+
+        void Awake() {
+            startingPos = transform.localPosition;    
+        }
+
         void Start() {
-            GetComponent<Rigidbody2D>().AddForce(Vector2.right * 5000);
+            StartMoving();
+        }
+
+        public void StartMoving(float speed = 5000) {
+            GetComponent<Rigidbody2D>().AddForce(Vector2.right * speed);
         }
 
     }

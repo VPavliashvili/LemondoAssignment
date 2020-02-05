@@ -74,6 +74,7 @@
     <Compile Include="Assets\Scripts\General\GeneralPlayerController.cs" />
     <Compile Include="Assets\Scripts\General\StageCompleter.cs" />
     <Compile Include="Assets\Scripts\General\Utils.cs" />
+    <Compile Include="Assets\Scripts\General\VariableReseter.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\BoolVariable.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\FloatVariable.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\IntVariable.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="Assets\Scripts\Stage1\PlayerController.cs" />
     <Compile Include="Assets\Scripts\Stage1\TrapsDeployer.cs" />
     <Compile Include="Assets\Scripts\Stage1\WallInfo.cs" />
+    <Compile Include="Assets\Scripts\Stage2\Helpers\DeathHelper.cs" />
     <Compile Include="Assets\Scripts\Stage2\KillerBallController.cs" />
     <Compile Include="Assets\Scripts\Stage2\PlayerController.cs" />
     <Compile Include="Assets\Scripts\VariableReferences\BoolReference.cs" />

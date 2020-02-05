@@ -10,13 +10,13 @@ public class StageCompleter : MonoBehaviour {
     [SerializeField]
     public BoolReference isIntransition;
     [SerializeField]
-    private GameObject leftWall;
+    private SpriteRenderer eyeRenderer;
 
     private GameObject stage1;
     private Stage1.PlayerController Stage1Controller;
 
     [SerializeField][Range(1,5)]
-    private float transitionTime; 
+    private float transitionTime;
 
     private Vector3 CameraEndPos {
         get {
@@ -40,7 +40,6 @@ public class StageCompleter : MonoBehaviour {
         Destroy(Stage1Controller);
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         AnimatorHelper.animator.SetBool("IsMoving", true);
-        Debug.Log(AnimatorHelper.animator.GetBool("IsMoving"));
 
         yield return new WaitForEndOfFrame();
         yield return new WaitForEndOfFrame();
@@ -52,6 +51,7 @@ public class StageCompleter : MonoBehaviour {
         camera.transform.DOMoveX(cameraEndPosX, time, false);
         //gameObject.transform.DOMove(characterEndPos, time, true);
         transform.parent = playerController.transform;
+        playerController.playerEyeRenderer = eyeRenderer;
 
         yield return new WaitForEndOfFrame();
 
@@ -63,6 +63,8 @@ public class StageCompleter : MonoBehaviour {
         Destroy(stage1);
         isIntransition.Value = false;
         GameObject.Find("LeftWall").GetComponent<BoxCollider2D>().enabled = true;
+
+        playerController.startingPos = transform.position;
 
         enabled = false;
     }

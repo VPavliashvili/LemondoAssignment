@@ -31,7 +31,8 @@ public class GeneralPlayerController : MonoBehaviour {
     protected float Speed => (isWalking ? movementSpeed / walkingReduction : movementSpeed) * Time.fixedDeltaTime;
     protected Vector3 MovePos => (Vector3)movementDir * Speed * horizontalInput;
 
-    void Update() {
+
+    protected void Update() {
         horizontalInput = Input.GetAxis("Horizontal");
 
         Stage1.MovementHelper.SetInputButtonBool("Jump", isJumping);
