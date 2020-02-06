@@ -72,7 +72,6 @@
     <Compile Include="Assets\Scripts\General\AnimatorHelper.cs" />
     <Compile Include="Assets\Scripts\General\CharacterAnimationsController.cs" />
     <Compile Include="Assets\Scripts\General\GeneralPlayerController.cs" />
-    <Compile Include="Assets\Scripts\General\StageCompleter.cs" />
     <Compile Include="Assets\Scripts\General\Utils.cs" />
     <Compile Include="Assets\Scripts\General\VariableReseter.cs" />
     <Compile Include="Assets\Scripts\ScriptableVariables\BoolVariable.cs" />
@@ -85,11 +84,13 @@
     <Compile Include="Assets\Scripts\Stage1\Helpers\MovementHelper.cs" />
     <Compile Include="Assets\Scripts\Stage1\Helpers\TrapsHelper.cs" />
     <Compile Include="Assets\Scripts\Stage1\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Stage1\StageCompleter.cs" />
     <Compile Include="Assets\Scripts\Stage1\TrapsDeployer.cs" />
     <Compile Include="Assets\Scripts\Stage1\WallInfo.cs" />
     <Compile Include="Assets\Scripts\Stage2\Helpers\DeathHelper.cs" />
     <Compile Include="Assets\Scripts\Stage2\KillerBallController.cs" />
     <Compile Include="Assets\Scripts\Stage2\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\Stage3\PlayerController.cs" />
     <Compile Include="Assets\Scripts\VariableReferences\BoolReference.cs" />
     <Compile Include="Assets\Scripts\VariableReferences\FloatReference.cs" />
     <Compile Include="Assets\Scripts\VariableReferences\IntReference.cs" />

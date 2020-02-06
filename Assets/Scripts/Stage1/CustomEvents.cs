@@ -48,12 +48,12 @@ namespace Stage1 {
             );
 
         public event Action
-            <StageCompleter, WallInfo,
+            <stage1.StageCompleter, WallInfo,
             Func<GameObject, Vector3,Quaternion,GameObject>,
             GameObject, Vector3
             > OnStagePassed;
         public void RaiseOnStagePassed(
-            StageCompleter completer, WallInfo rightWall, 
+            stage1.StageCompleter completer, WallInfo rightWall, 
             Func<GameObject, Vector3, Quaternion, GameObject> instantiate,
             GameObject nextStagePrefab, Vector3 onPosition
             ) => OnStagePassed?.Invoke(completer, rightWall, instantiate, nextStagePrefab, onPosition);

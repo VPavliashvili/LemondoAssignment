@@ -23,6 +23,7 @@ namespace Stage2 {
         private Sprite OpenedEye;
 
         public Vector3 startingPos;
+        private Vector3 boxStartingPos;
 
         private bool needToFlip;
         private bool isDragging;
@@ -108,37 +109,22 @@ namespace Stage2 {
                     callOnce = true;
                     startingParent = other.transform.parent.parent;
                     dragableBox = other.transform.parent;
+                    boxStartingPos = dragableBox.localPosition;
                 }
 
                 isStaying = true;
 
             }
+            if(other.name == "Exit") {
+                
+            }
+
         }
 
         void OnTriggerExit2D(Collider2D other) {
             if (other.name == "DragTrigger") {
-                isStaying = true;
+                isStaying = false;
             } 
-        }
-
-        void OnTriggerStay2D(Collider2D other) {
-            //if(other.name == "DragTrigger") {
-            //    Transform box = other.transform;
-            //    if (Input.GetButtonDown("Action")) {
-            //        if (!isDragging) {
-            //            isDragging = true;
-            //            //other.transform.parent = transform;
-            //            box.GetComponent<SpriteRenderer>().enabled = true;
-            //        }
-            //        else {
-            //            isDragging = false;
-            //            //other.transform.parent = startingParent;
-            //            box.GetComponent<SpriteRenderer>().enabled = false;
-            //        }
-            //    }
-
-            //    Debug.Log(isDragging);
-            //}    
         }
 
         private void Die(Transform ball) {
@@ -174,7 +160,10 @@ namespace Stage2 {
 
         private IEnumerator Respawn(Rigidbody2D rb) {
             if (needToFlip) {
+                //Debug.Log("before: " + transform.localScale.x);
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+                //Debug.Log("afrer: " + transform.localScale.x);
+                facingLeft = !facingLeft;
             }
 
             AnimatorHelper.animator.SetBool("IsDead", false);
@@ -187,7 +176,9 @@ namespace Stage2 {
 
             killerBallRb.transform.localPosition = killerBallRb.GetComponent<KillerBallController>().startingPos;
             killerBallRb.GetComponent<KillerBallController>().StartMoving();
-
+            if (dragableBox != null)
+                dragableBox.localPosition = boxStartingPos;
+            
             AnimatorHelper.animator.SetBool("IsMoving", true);
             transform.DOLocalMoveX(-22, 1.5f);
             yield return new WaitForSeconds(1.5f);

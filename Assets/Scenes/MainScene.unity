@@ -1082,10 +1082,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab6b29db232696f4a99ccdd729bf29aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 0}
+  Stage2PlayerController: {fileID: 0}
   isIntransition:
     variable: {fileID: 11400000, guid: 8f6636f04bb244f428327b713ed96cdb, type: 2}
   eyeRenderer: {fileID: 960764102}
+  nextCameraPosX: 51.7
   transitionTime: 2.29
 --- !u!114 &453978978
 MonoBehaviour:

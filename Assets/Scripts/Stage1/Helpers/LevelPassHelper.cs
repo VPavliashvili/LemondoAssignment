@@ -8,7 +8,7 @@ namespace Stage1 {
     public static class StagePassHelper {
         
         public static void OnStagePassed(
-            StageCompleter stageCompleter, WallInfo rightWall,
+            stage1.StageCompleter stageCompleter, WallInfo rightWall,
             System.Func<GameObject,Vector3,Quaternion,GameObject> instantiate,
             GameObject nextStagePrefab, Vector3 onPosition
         ) {
@@ -19,10 +19,10 @@ namespace Stage1 {
 
         private static void SpawnNextStage(
             System.Func<GameObject, Vector3, Quaternion, GameObject> instantiate,
-             GameObject nextStagePrefab, Vector3 onPosition, StageCompleter stageCompleter
+             GameObject nextStagePrefab, Vector3 onPosition, stage1.StageCompleter stageCompleter
         ) {
             GameObject nextStage = instantiate(nextStagePrefab, onPosition, Quaternion.identity);
-            stageCompleter.playerController = nextStage.GetFirstChild().GetFirstChild().GetComponent<Stage2.PlayerController>();
+            stageCompleter.Stage2PlayerController = nextStage.GetFirstChild().GetFirstChild().GetComponent<Stage2.PlayerController>();
         }
 
     }

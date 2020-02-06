@@ -19,7 +19,7 @@ namespace Stage1 {
         [SerializeField]
         private TrapsDeployer trapsDeployer;
         [SerializeField]
-        private StageCompleter stageCompleter;
+        private stage1.StageCompleter stageCompleter;
         [SerializeField]
         private GameObject nextStagePrefab;
 
