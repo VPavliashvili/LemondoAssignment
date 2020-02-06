@@ -1,7 +1,4 @@
-﻿using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Stage1 {
 
@@ -15,7 +12,7 @@ namespace Stage1 {
             else if (Input.GetButtonUp(inputName)) {
                 varjump.Value = false;
             }
-            //Debug.Log($"from jumping->var: {BoolReference.GetVariableName(() => varjump)}");
+
         }
 
         //for moving
@@ -28,7 +25,6 @@ namespace Stage1 {
                 varwalk.Value = false;
                 animator.SetBool(animationBoolName, false);
             }
-            //Debug.Log($"from walking->var: {BoolReference.GetVariableName(() => varwalk)}");
         }
 
         public static void ManageMovement(
@@ -40,7 +36,6 @@ namespace Stage1 {
             FlipFacing(ref facingLeft, transform, horizontalInput);
             Jump(isJumping, ref isGrounded, rb, jumpForce);
 
-            //Debug.Log(horizontalInput);
             
             AnimatorHelper.Move(horizontalInput);
 
@@ -57,7 +52,6 @@ namespace Stage1 {
         }
 
         private static void Jump(BoolReference isJumping, ref bool isGrounded, Rigidbody2D rb, float jumpForce) {
-                //Debug.Log($"isJumping: {isJumping}\nisGrounded: {isGrounded}");
             if (isJumping && isGrounded) {
                 rb.AddForce(-Physics2D.gravity * jumpForce);
 
@@ -67,7 +61,7 @@ namespace Stage1 {
                 AnimatorHelper.Jump();
                 
             }
-                //Debug.Log(rb.transform.parent.name);
+
         }
 
 

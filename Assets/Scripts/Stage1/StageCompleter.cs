@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections;
 using UnityEngine;
-using DG.Tweening;
 
-namespace stage1 {
+namespace Stage1 {
 
     public class StageCompleter : MonoBehaviour {
 
@@ -15,7 +14,7 @@ namespace stage1 {
         private SpriteRenderer eyeRenderer;
 
         private GameObject stage1;
-        private Stage1.PlayerController Stage1Controller;
+        private PlayerController Stage1Controller;
 
         public float nextCameraPosX = 51.7f;
 
@@ -31,7 +30,7 @@ namespace stage1 {
         }
 
         void OnEnable() {
-            Stage1Controller = transform.parent.GetComponent<Stage1.PlayerController>();
+            Stage1Controller = transform.parent.GetComponent<PlayerController>();
             stage1 = transform.parent.parent.gameObject;
 
 
@@ -44,7 +43,7 @@ namespace stage1 {
             transform.parent = null;
             Destroy(Stage1Controller);
             Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            AnimatorHelper.animator.SetBool("IsMoving", true);
+            AnimatorHelper.characterAnimator.SetBool("IsMoving", true);
 
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();

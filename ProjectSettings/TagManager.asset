@@ -11,6 +11,8 @@ TagManager:
   - Trap
   - Wall
   - Box
+  - ShootingObject
+  - Throwable
   layers:
   - Default
   - TransparentFX

@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections;
 using UnityEngine;
-using DG.Tweening;
 
 namespace Stage2 {
 
@@ -16,12 +15,15 @@ namespace Stage2 {
         private Sprite[] eyeSprites;
         [SerializeField]
         private BoolReference isDeadByBall;
+        [SerializeField]
+        private GameObject Stage3Prefab;
         private Rigidbody2D killerBallRb;
 
         private Transform startingParent;
         private Transform dragableBox;
         private Sprite OpenedEye;
 
+        [HideInInspector]
         public Vector3 startingPos;
         private Vector3 boxStartingPos;
 
@@ -29,6 +31,7 @@ namespace Stage2 {
         private bool isDragging;
         private bool callOnce;
         private bool isStaying;
+        private bool isStagePassed;
 
         void Awake() {
             rb = GetComponent<Rigidbody2D>();
@@ -36,7 +39,12 @@ namespace Stage2 {
         }
 
         new void Update() {
-            base.Update();
+            if (!isStagePassed)
+                base.Update();
+            else {
+                AnimatorHelper.characterAnimator.SetBool("IsMoving", true);
+                AnimatorHelper.characterAnimator.SetBool("IsWalking", true);
+            }
 
             if (Input.GetButtonDown("Respawn") && isDeadByBall) {
                 isDeadByBall.Value = false;
@@ -49,11 +57,11 @@ namespace Stage2 {
 
                     //dragableBox.GetComponent<SpriteRenderer>().color = isDragging ? Color.green : Color.red;
                     if (isDragging)
-                        AnimatorHelper.animator.SetTrigger("DragActionStarted");
+                        AnimatorHelper.characterAnimator.SetTrigger("DragActionStarted");
                     else {
-                        AnimatorHelper.animator.SetTrigger("DragActionEnded");
-                        AnimatorHelper.animator.SetBool("IsDraggingAhead", false);
-                        AnimatorHelper.animator.SetBool("IsDraggingBack", false);
+                        AnimatorHelper.characterAnimator.SetTrigger("DragActionEnded");
+                        AnimatorHelper.characterAnimator.SetBool("IsDraggingAhead", false);
+                        AnimatorHelper.characterAnimator.SetBool("IsDraggingBack", false);
                         isWalking.Value = false;
                     }
                     //dragableBox.transform.parent = isDragging ? transform : startingParent;
@@ -66,26 +74,28 @@ namespace Stage2 {
         }
 
         void FixedUpdate() {
-            if (!isDeadByBall && !isDragging) {
-                if (!isInTransition)
-                    Stage1.MovementHelper.ManageMovement(
-                        ref facingLeft, isJumping, ref isGrounded,
-                        jumpForce, rb, transform, MovePos, horizontalInput
-                    );
-                else
-                    Stage1.MovementHelper.ManageMovement(
-                        ref facingLeft, isJumping, ref isGrounded,
-                        jumpForce, rb, transform, MovePos, 1
-                    );
-            }
-            else if (isDragging) {
-                if (horizontalInput != 0) {
-                    isWalking.Value = true;
-                    transform.localPosition += MovePos;
-                    dragableBox.localPosition += MovePos;
+            if (!isStagePassed) {
+                if (!isDeadByBall && !isDragging) {
+                    if (!isInTransition)
+                        Stage1.MovementHelper.ManageMovement(
+                            ref facingLeft, isJumping, ref isGrounded,
+                            jumpForce, rb, transform, MovePos, horizontalInput
+                        );
+                    else
+                        Stage1.MovementHelper.ManageMovement(
+                            ref facingLeft, isJumping, ref isGrounded,
+                            jumpForce, rb, transform, MovePos, 1
+                        );
+                }
+                else if (isDragging) {
+                    if (horizontalInput != 0) {
+                        isWalking.Value = true;
+                        transform.localPosition += MovePos;
+                        dragableBox.localPosition += MovePos;
 
-                    AnimatorHelper.animator.SetBool("IsDraggingAhead", horizontalInput > 0);
-                    AnimatorHelper.animator.SetBool("IsDraggingBack", horizontalInput < 0);
+                        AnimatorHelper.characterAnimator.SetBool("IsDraggingAhead", horizontalInput > 0);
+                        AnimatorHelper.characterAnimator.SetBool("IsDraggingBack", horizontalInput < 0);
+                    }
                 }
             }
         }
@@ -116,7 +126,40 @@ namespace Stage2 {
 
             }
             if(other.name == "Exit") {
-                
+                Transform bg = transform.parent.GetChild(1);
+                float xIncrement = Utils.GetBoundsWithRenderer(bg.GetComponent<SpriteRenderer>()).extents.x;
+
+                Vector3 pos = bg.position;
+
+                pos.x += (2 * xIncrement) + 5;
+                pos.y = 0;
+                GameObject stage3Holder = Instantiate(Stage3Prefab, pos, Quaternion.identity);
+
+                StartCoroutine(StageTransition(stage3Holder.transform.GetFirstChild().GetFirstChild(), 0, pos.x, Camera.main, 2.5f));
+            }
+
+            IEnumerator StageTransition(Transform characterHolder, float characterEndPosX, float cameraEndPosX, Camera camera, float time = 2.3f) {
+                isStagePassed = true;
+
+                Transform player = transform.GetFirstChild();
+
+                player.parent = characterHolder;
+                transform.localPosition = Vector3.zero;
+
+                camera.transform.DOMoveX(cameraEndPosX, time);
+
+                yield return new WaitForEndOfFrame();
+
+                player.DOLocalMoveX(0, time);
+
+                Transform leftWall = characterHolder.parent.GetChild(2).Find("LeftWall");
+                leftWall.GetComponent<BoxCollider2D>().enabled = true;
+
+                characterHolder.GetComponent<Stage3.PlayerController>().playerEyeRenderer = playerEyeRenderer;
+
+                yield return new WaitForSeconds(time);
+                Destroy(transform.parent.parent.gameObject);
+
             }
 
         }
@@ -125,6 +168,11 @@ namespace Stage2 {
             if (other.name == "DragTrigger") {
                 isStaying = false;
             } 
+        }
+
+        void OnDestroy() {
+            AnimatorHelper.characterAnimator.SetBool("IsMoving", false);
+            AnimatorHelper.characterAnimator.SetBool("IsWalking", false);
         }
 
         private void Die(Transform ball) {
@@ -154,19 +202,17 @@ namespace Stage2 {
 
             needToFlip = transform.localScale.x < 0;
 
-            AnimatorHelper.animator.SetBool("IsDead", true);
+            AnimatorHelper.characterAnimator.SetBool("IsDead", true);
 
         }
 
         private IEnumerator Respawn(Rigidbody2D rb) {
             if (needToFlip) {
-                //Debug.Log("before: " + transform.localScale.x);
                 transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-                //Debug.Log("afrer: " + transform.localScale.x);
                 facingLeft = !facingLeft;
             }
 
-            AnimatorHelper.animator.SetBool("IsDead", false);
+            AnimatorHelper.characterAnimator.SetBool("IsDead", false);
 
             transform.localEulerAngles = Vector3.zero;
             transform.localPosition = new Vector3(-28, -12);
@@ -179,10 +225,10 @@ namespace Stage2 {
             if (dragableBox != null)
                 dragableBox.localPosition = boxStartingPos;
             
-            AnimatorHelper.animator.SetBool("IsMoving", true);
+            AnimatorHelper.characterAnimator.SetBool("IsMoving", true);
             transform.DOLocalMoveX(-22, 1.5f);
             yield return new WaitForSeconds(1.5f);
-            AnimatorHelper.animator.SetBool("IsMoving", false);
+            AnimatorHelper.characterAnimator.SetBool("IsMoving", false);
         }
 
     }

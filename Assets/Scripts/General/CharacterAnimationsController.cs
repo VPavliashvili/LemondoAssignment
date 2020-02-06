@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CharacterAnimationsController : MonoBehaviour {
 
@@ -11,7 +9,7 @@ public class CharacterAnimationsController : MonoBehaviour {
     
     void Awake() {
         animator = GetComponent<Animator>();
-        AnimatorHelper.animator = animator;
+        AnimatorHelper.characterAnimator = animator;
     }
 
     void Start() {

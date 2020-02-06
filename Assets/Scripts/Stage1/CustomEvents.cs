@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 namespace Stage1 {
 
@@ -48,12 +48,12 @@ namespace Stage1 {
             );
 
         public event Action
-            <stage1.StageCompleter, WallInfo,
+            <Stage1.StageCompleter, WallInfo,
             Func<GameObject, Vector3,Quaternion,GameObject>,
             GameObject, Vector3
             > OnStagePassed;
         public void RaiseOnStagePassed(
-            stage1.StageCompleter completer, WallInfo rightWall, 
+            Stage1.StageCompleter completer, WallInfo rightWall, 
             Func<GameObject, Vector3, Quaternion, GameObject> instantiate,
             GameObject nextStagePrefab, Vector3 onPosition
             ) => OnStagePassed?.Invoke(completer, rightWall, instantiate, nextStagePrefab, onPosition);

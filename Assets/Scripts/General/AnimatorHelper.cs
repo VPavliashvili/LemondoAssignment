@@ -1,25 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
+﻿using UnityEngine;
 
 public static class AnimatorHelper {
 
-    public static Animator animator;
+    public static Animator characterAnimator;
     
     public static void Jump() {
-        animator.SetTrigger("Jump");
+        characterAnimator.SetTrigger("Jump");
     }
 
     public static void Walk(bool isWalking) {
-        animator.SetBool("IsWalking", isWalking);
+        characterAnimator.SetBool("IsWalking", isWalking);
     }
 
     public static void Move(float inputVal) {
         if (inputVal != 0)
-            animator.SetBool("IsMoving", true);
+            characterAnimator.SetBool("IsMoving", true);
         else
-            animator.SetBool("IsMoving", false);
+            characterAnimator.SetBool("IsMoving", false);
     }
+
+    public static void Die() => AnimatorHelper.characterAnimator.SetBool("IsDead", true);
+    public static void Respawn() => AnimatorHelper.characterAnimator.SetBool("IsDead", false);
 
 }

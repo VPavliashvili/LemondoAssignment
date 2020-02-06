@@ -1,8 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class GeneralPlayerController : MonoBehaviour {
 
@@ -36,7 +32,7 @@ public class GeneralPlayerController : MonoBehaviour {
         horizontalInput = Input.GetAxis("Horizontal");
 
         Stage1.MovementHelper.SetInputButtonBool("Jump", isJumping);
-        Stage1.MovementHelper.SetInputButtonBool("Walk", isWalking, AnimatorHelper.animator, "IsWalking");
+        Stage1.MovementHelper.SetInputButtonBool("Walk", isWalking, AnimatorHelper.characterAnimator, "IsWalking");
 
     }
 

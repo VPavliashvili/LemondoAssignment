@@ -110,6 +110,8 @@ MonoBehaviour:
   - {fileID: -6171616482614711401, guid: d0e383919558d444994f7ed63c30a1b6, type: 3}
   isDeadByBall:
     variable: {fileID: 11400000, guid: 073e2dee6ccd5494ab52b8ba1a3d1976, type: 2}
+  Stage3Prefab: {fileID: 9183294136445328451, guid: 01c4614029d51b9438acc448d89a6cce,
+    type: 3}
   startingPos: {x: 0, y: 0, z: 0}
 --- !u!1 &1144470858345739153
 GameObject:

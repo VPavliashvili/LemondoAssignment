@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Stage1 {
 
@@ -19,7 +17,7 @@ namespace Stage1 {
         [SerializeField]
         private TrapsDeployer trapsDeployer;
         [SerializeField]
-        private stage1.StageCompleter stageCompleter;
+        private Stage1.StageCompleter stageCompleter;
         [SerializeField]
         private GameObject nextStagePrefab;
 
